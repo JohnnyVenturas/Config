@@ -32,7 +32,12 @@ return {
         vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic in float window' })
         vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
 
+        
         -- nvim-cmp setup
+        
+        --signcolumn must be on the left
+        vim.opt.signcolumn = "yes"
+        luasnip = require('luasnip')
         local cmp = require'cmp'
         cmp.setup({
             snippet = {
@@ -48,8 +53,44 @@ return {
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),
                 ['<C-Space>'] = cmp.mapping.complete(),
+                ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.ConfirmBehavior.Insert }),
+                ['<C-n>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item({behavior = cmp.ConfirmBehavior.Insert})
+                        return
+                    end
+
+                    if luasnip.jumpable(1) then
+                        luasnip.jump(1)
+                    else
+                        cmp.complete()
+                    end
+                end, {'i', 's'}),
+                ['<C-p>'] = cmp.mapping(function(fallback)
+
+                    if cmp.visible() then
+                        cmp.select_prev_item({behavior = cmp.ConfirmBehavior.Insert})
+                        return
+                    end
+
+                    if luasnip.jumpable(-1) then
+                        luasnip.jump(-1)
+                    else
+                        cmp.complete()
+
+                    end
+                end,{'i', 's'}),
                 ['<C-e>'] = cmp.mapping.abort(),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }), 
+                --['<CR>'] = cmp.mapping.confirm({ select = true }), 
+                ['<CR>'] = cmp.mapping(
+                    function(fallback)
+                        if cmp.visible() then
+                            cmp.confirm({ select = true })
+                        else
+                            fallback()
+                        end
+                    end)
+
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },

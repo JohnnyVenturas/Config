@@ -7,7 +7,7 @@ return {
     },
     config = function()
         require("mason-lspconfig").setup {
-            automatic_enable = true
+            automatic_enable = true,
         }
     end
 }

@@ -27,7 +27,6 @@ vim.api.nvim_set_keymap('n', '<C-v>', '<C-q>', { noremap = true, silent = true }
 
 
 vim.cmd('set relativenumber')
+vim.cmd('set number')
 
-
-
-
+vim.cmd('set guicursor=n-v-c-i:block')
