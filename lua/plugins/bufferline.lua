@@ -15,5 +15,6 @@ return {
         end
         vim.keymap.set('n', '<C-p>', "<cmd>BufferLineCyclePrev<cr>")
         vim.keymap.set('n', '<C-n>', "<cmd>BufferLineCycleNext<cr>")
+        vim.keymap.set('n', '<leader>x', "<cmd>bd<cr>")
     end
 }
