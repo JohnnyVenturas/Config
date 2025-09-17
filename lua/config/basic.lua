@@ -25,8 +25,7 @@ vim.api.nvim_set_keymap('v', '<C-c>', '"+y', opts)
 -- for some reason, on windows terminals c-v directly pastes and does not enable block mode
 vim.api.nvim_set_keymap('n', '<C-v>', '<C-q>', { noremap = true, silent = true })
 
-
-vim.cmd('set relativenumber')
-vim.cmd('set number')
-
-vim.cmd('set guicursor=n-v-c-i:block')
+vim.opt.relativenumber=true
+vim.opt.number=true
+vim.opt.guicursor='n-v-c-i:block'
+vim.opt.autochdir=true
