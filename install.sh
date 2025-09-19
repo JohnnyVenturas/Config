@@ -14,6 +14,6 @@ if [ -e "~/.tmux.conf" ] ; then
     echo "~/.tmux.conf already exist."
     echo "Remove old config before continuing (e.g. ~/.tmux.conf)"
 else
-    ln -s .tmux.conf ~/.tmux.conf
+    ln -s "$PWD"/.tmux.conf ~/.tmux.conf
 fi
 
