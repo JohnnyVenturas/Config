@@ -31,6 +31,7 @@ return {
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
         vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic in float window' })
         vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
 
         
         -- nvim-cmp setup
@@ -53,7 +54,7 @@ return {
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),
                 ['<C-Space>'] = cmp.mapping.complete(),
-                ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.ConfirmBehavior.Insert }),
+                ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.ConfirmBehavior.Insert }),
                 ['<C-n>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item({behavior = cmp.ConfirmBehavior.Insert})
