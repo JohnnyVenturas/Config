@@ -70,6 +70,10 @@ return {
             vim.keymap.set("n", "<F4>", dap.step_out)
             vim.keymap.set("n", "<F5>", dap.step_back)
             vim.keymap.set("n", "<F12>", dap.restart)
+            vim.keymap.set("n", "<leader>du", dap.up)
+            vim.keymap.set("n", "<leader>dd", dap.down)
+
+
             
             -- Automatically open/close debug UI
             dap.listeners.before.attach.dapui_config = function()
