@@ -9,10 +9,10 @@ return {
                 light = "latte",
                 dark = "mocha",
             },
-            transparent_background = false, -- disables setting the background color.
+            transparent_background = true, -- disables setting the background color.
             float = {
-                transparent = false,  -- enable transparent floating windows
-                solid = false,        -- use solid styling for floating windows, see |winborder|
+                transparent = true,  -- enable transparent floating windows
+                solid = true,        -- use solid styling for floating windows, see |winborder|
             },
             show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
             term_colors = false,      -- sets terminal colors (e.g. `g:terminal_color_0`)
@@ -65,6 +65,17 @@ return {
             }
         })
         vim.cmd.colorscheme "catppuccin"
+
+        -- Also override the K mapping to ensure consistency
+        vim.keymap.set('n', 'K', function()
+            vim.lsp.buf.hover({ border = "single" })
+        end, { desc = "LSP Hover with Border" })
+
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+            vim.lsp.handlers.hover, {
+                border = "shadow" -- Drop shadow effect
+            }
+        )
     end
 
 }
