@@ -1,14 +1,6 @@
 
 config_dir="$HOME"
 
-case  "$SHELL"  in
-    *bash*)
-    . "$config_dir/.bash_profile";;
-    *zsh*)
-    . "$config_dir/.zprofile"
-        ;;
-esac
-
 export NVIM="$HOME/.config/nvim"
 
 if [ "$(uname -s)" = "Darwin" ];then
