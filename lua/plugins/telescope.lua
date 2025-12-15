@@ -19,11 +19,13 @@ return {
                 vim.wo.relativenumber=true
             end
         })
-        vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = "none" })
-        vim.api.nvim_set_hl(0, "TelescopePromptTitle", { bg = "none" })
-        vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { bg = "none" })
-        vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { bg = "none" })
+
+        local  background_color = 'none'
+
+        vim.api.nvim_set_hl(0, "TelescopeNormal", {bg = background_color})
+        vim.api.nvim_set_hl(0, "TelescopeBorder", {bg = background_color})
+        vim.api.nvim_set_hl(0, "TelescopePromptTitle", {bg = background_color})
+        vim.api.nvim_set_hl(0, "TelescopePreviewTitle", {bg = background_color})
+        vim.api.nvim_set_hl(0, "TelescopeResultsTitle", {bg = background_color})
       end
-    
 }

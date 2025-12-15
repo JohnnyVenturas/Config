@@ -17,35 +17,115 @@ return {
             require("dap-go").setup()
             
             -- Check if gdb is available
-            local gdb = vim.fn.exepath "gdb"
-            if gdb ~= "" then
-                -- Set up the debug adapter (the bridge between Neovim and gdb)
-                dap.adapters.cppdbg = {
-                    type = "executable",
-                    command = vim.fn.stdpath('data') .. '/mason/bin/OpenDebugAD7'
-                }
-                
-                -- Configure how to debug C++ programs
-                dap.configurations.cpp = {
-                    {
-                        type = "cppdbg",
-                        request = "launch",
-                        name = "Launch CPP Program",
-                        -- THIS IS THE KEY PART - tells debugger which program to run
-                        program = function()
-                            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-                        end,
-                        cwd = '${workspaceFolder}',
-                        stopAtEntry = true,
-                        -- Move these to top level (not nested under OS)
-                        MIMode = "gdb",
-                        miDebuggerPath = "/usr/bin/gdb"
-                    }
-                }
-                
-                -- Also set up for C files
-                dap.configurations.c = dap.configurations.cpp
-            end
+            --
+            local mason_path  = vim.fn.stdpath('data') .. '/mason'
+
+            dap.adapters.debugpy = {
+                type = "executable",
+                command = mason_path .. '/bin/debugpy-adapter'
+            }
+
+            dap.configurations.python = {
+                {
+                    type = 'debugpy',
+                    request = 'launch',
+                    name = "Launch file",
+                    program = "${file}",
+                    pythonPath = function()
+                        return vim.fn.exepath('python3')
+                    end,
+                },
+                {
+                    type = 'debugpy',
+                    request = 'launch',
+                    name = "Launch file with arguments",
+                    program = "${file}",
+                    pythonPath = function()
+                        return vim.fn.exepath('python3')
+                    end,
+                    args=function ()
+                        local args_string = vim.fn.input("Arguments:")
+                        return vim.split(args_string, " +")
+                    end,
+                },
+            }
+
+            local gdb = vim.fn.exepath("gdb")
+            local lldb                = vim.fn.exepath("lldb")
+
+            dap.adapters.cppdbg          = {
+                type = "executable",
+                command = mason_path .. '/bin/codelldb'
+            }
+
+
+            -- Configure how to debug C++ programs
+            -- local debugger
+
+            -- local get_debugger = function ()
+            --     if not debugger then 
+            --         debugger = vim.fn.input("Select Debugger: (gdb | lldb) ")
+            --         return debugger
+            --     else
+            --         return debugger
+            --     end
+            -- end
+            
+            -- local MIMode = function()
+            --
+            --     local debugger = get_debugger()
+            --
+            --     if debugger ~= 'gdb' and debugger ~= 'lldb' then
+            --         error("Unknown debugger" .. debugger)
+            --     end
+            --
+            --     return debugger
+            -- end
+
+            -- local miDebuggerPath = function ()
+            --     return vim.fn.exepath(get_debugger())
+            -- end
+
+
+            dap.configurations.cpp = {
+                {
+                    type = "cppdbg",
+                    request = "launch",
+                    name = "Debug CPP Program",
+                    -- THIS IS THE KEY PART - tells debugger which program to run
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    end,
+                    cwd =  vim.fn.getcwd(),
+                    stopAtEntry = true,
+                    -- Move these to top level (not nested under OS)
+                    MIMode = 'lldb',
+                    miDebuggerPath = vim.fn.exepath('lldb'),
+                } , {
+                    type = "cppdbg",
+                    request = "launch",
+                    name = "Debug CPP Program with arguments",
+                    -- THIS IS THE KEY PART - tells debugger which program to run
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    end,
+                    cwd = vim.fn.getcwd(),
+                    stopAtEntry = true,
+                    -- Move these to top level (not nested under OS)
+                    MIMode = 'lldb',
+                    miDebuggerPath = vim.fn.exepath('lldb'),
+                    args = function ()
+                        local args = vim.fn.input("Arguments (enter for no arguments): ") 
+                        return vim.split(args, " +")
+                    end
+                } 
+            }
+
+
+            -- Also set up for C files
+            dap.configurations.c = dap.configurations.cpp
+
+
             
             -- Custom breakpoint symbol
             vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})

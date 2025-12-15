@@ -34,6 +34,15 @@ return {
             end,
         }
 
+        local background_color
+
+        if transparent_mode then
+            background_color = nil 
+        else
+            background_color = colors.bg
+        end
+
+        
 
         local config = {
             options = {
@@ -44,8 +53,8 @@ return {
                     -- We are going to use lualine_c an lualine_x as left and
                     -- right section. Both are highlighted by c theme .  So we
                     -- are just setting default looks o statusline
-                    normal = { c = { fg = colors.fg, bg = nil} },
-                    inactive = { c = { fg = colors.fg, bg = nil } },
+                    normal = { c = { fg = colors.fg, bg = background_color} },
+                    inactive = { c = { fg = colors.fg, bg = background_color } },
                 },
             },
             sections = {
