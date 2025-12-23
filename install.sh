@@ -14,7 +14,7 @@ newline() {
 zshenv() {
 
     if [ -e "$HOME/.zshenv" ]; then
-        printf "Please remmove zshenv before proceding"
+        printf "Please remmove zshenv before proceding\n"
     else
         ln -s "$PWD/.zshenv" "$HOME/.zshenv"
     fi
@@ -31,7 +31,7 @@ build_parents() {
     for parent_directory in "$@"; do
         if [ ! -e "$base_directory/$parent_directory" ]; then
             mkdir "$base_directory/$parent_directory"
-            printf "%bCreating%b parent_directory %b%s%b" "$RED" "$NC"  "$GREEN" "$base_directory/$parent_directory" "$NC"
+            printf "%bCreating%b parent_directory %b%s%b\n" "$RED" "$NC"  "$GREEN" "$base_directory/$parent_directory" "$NC"
         fi
     done
 
