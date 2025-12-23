@@ -1,14 +1,19 @@
-#
-# ~/.bashrc
-#
+autoload -z edit-command-line
+zle -N edit-command-line
+alias pip='python3 -m pip'
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+export EDITOR=nvim
+
+bindkey -v
+
+bindkey -M vicmd 'v' edit-command-line
+
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-export PS1='\[\e[1;37m\]\u@\h \[\e[1;37m\]\W>\[\e[1;37m\] \[\e[0m\]'
+PROMPT='%B%F{white}%n@%m %1~> %f%b'
+ZDOTDIR=~/.config/zsh
 
 function ssh_setup() {
     # generate the ssh_agent session
@@ -40,3 +45,4 @@ function y() {
 }
 
 ssh_setup
+
