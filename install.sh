@@ -11,14 +11,6 @@ newline() {
     printf '\n%.0s' $(seq 1 2)
 }
 
-# zshenv() {
-#
-#     if [ -e "$HOME/.zshenv" ]; then
-#         printf "Please remmove zshenv before proceding"
-#     else
-#         ln -s "$PWD/.zshenv" "$HOME/.zshenv"
-#     fi
-# }
 
 set_base_paths () {
     config_directory="$HOME/.config"
