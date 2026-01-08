@@ -44,5 +44,13 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function fan_on() {
+    pinctrl FAN_PWM op dl
+}
+function fan_off() {
+    pinctrl FAN_PWM op dh
+}
+
+
 ssh_setup
 
