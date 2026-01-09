@@ -12,7 +12,7 @@ bindkey -M vicmd 'v' edit-command-line
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-PROMPT='%B%F{white}%n@%m %1~> %f%b'
+PROMPT='%B%F{white}%n@%m %1~ ~> %f%b'
 ZDOTDIR=~/.config/zsh
 
 function ssh_setup() {
