@@ -14,6 +14,8 @@ newline() {
 
 set_base_paths () {
     config_directory="$HOME/.config"
+    current_directory=$(dirname $(realpath "$0"))
+
 }
 
 build_parents() {
@@ -36,7 +38,7 @@ install_configs() {
     total=$#
 
     for configuration_file in "$@"; do
-        source_path="$PWD/$configuration_file"
+        source_path="$current_directory/$configuration_file"
 
         case $configuration_file in
             "zsh/.zshenv")

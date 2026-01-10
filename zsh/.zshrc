@@ -1,3 +1,9 @@
+PROMPT='%B%F{white}%n@%m %1~ ~> %f%b'
+ZDOTDIR=~/.config/zsh
+
+
+plugins=( 'zsh-users/zsh-autosuggestions')
+
 autoload -z edit-command-line
 zle -N edit-command-line
 alias pip='python3 -m pip'
@@ -12,14 +18,13 @@ bindkey -M vicmd 'v' edit-command-line
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-PROMPT='%B%F{white}%n@%m %1~ ~> %f%b'
-ZDOTDIR=~/.config/zsh
 
 function ssh_setup() {
     # generate the ssh_agent session
     if [ ! -e '/tmp/ssh_agent' ] ;then
         ssh-agent > /tmp/ssh_agent
     fi
+
 
     #ensure the ssh-agent is in a valid state
 
@@ -50,6 +55,34 @@ function fan_on() {
 function fan_off() {
     pinctrl FAN_PWM op dh
 }
+
+# function load_plugins {
+#     cd "plugins"
+#     for plugin in *; do
+#         cd $plugin || exit 1
+#     done
+# }
+#
+# function install_plugins {
+#     local prefix="https://github.com"
+#     cd "plugins" || exit 1
+#     for plugin in "${plugins[@]}";do
+#         local plugin_name=${plugin/*\//}
+#
+#         if [ -e "$plugin_name" ] && [ -d "$plugin_name" ]; then
+#             cd "$plugin_name" || exit 1
+#             git pull
+#             cd ..
+#             continue
+#         fi
+#
+#         git clone "$prefix/$plugin"
+#     done
+#
+#     cd ..
+#
+# }
+
 
 
 ssh_setup
