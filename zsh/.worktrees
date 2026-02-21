@@ -1,0 +1,45 @@
+#!/bin/sh 
+
+gtrees() {
+  # 1. Safety check
+  if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo " \033[0;31m✗\033[0m Not a git repository."
+    return 1
+  fi
+
+  local selected_worktree
+  # 2. Use fzf with a styled preview and header
+  selected_worktree=$(git worktree list | fzf \
+    --ansi \
+    --header 'Select Worktree to Checkout' \
+    --preview 'echo -e "\033[1;33m--- RECENT HISTORY ---\033[0m"; git -C {1} log --graph --color=always --format="%C(auto)%h%Creset - %s %C(green)(%cr) %C(bold blue)<%an>%Creset" -n 15' \
+    --preview-window 'right:60%:wrap' \
+    --height 50% \
+    --reverse)
+
+  # 3. Handle selection
+  if [[ -n "$selected_worktree" ]]; then
+    local target_path=$(echo "$selected_worktree" | awk '{print $1}')
+    cd "$target_path"
+
+    # 4. Show branch status relative to upstream
+    local branch_name=$(git rev-parse --abbrev-ref HEAD)
+    local upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+
+    echo -e "\033[1;32m✔ Switched to:\033[0m $target_path \033[1;34m($branch_name)\033[0m"
+
+    if [[ -n "$upstream" ]]; then
+      local ahead=$(git rev-list --count ${upstream}..HEAD)
+      local behind=$(git rev-list --count HEAD..${upstream})
+      
+      if [[ $ahead -gt 0 || $behind -gt 0 ]]; then
+        echo -e "\033[0;33mℹ Status:\033[0m $ahead commits ahead, $behind commits behind \033[1;30m($upstream)\033[0m"
+      else
+        echo -e "\033[0;32mℹ Status:\033[0m Up to date with upstream."
+      fi
+    else
+      echo -e "\033[0;90mℹ Status: No upstream tracked for this branch.\033[0m"
+    fi
+  fi
+}
+
