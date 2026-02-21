@@ -116,10 +116,10 @@ return {
         }
 
 
-        vim.wo.foldenable = false
+        vim.wo.foldenable = true
         vim.wo.foldmethod = 'expr'
         vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-        vim.opt.foldlevel = 99
+        vim.opt.foldlevel = 0
     end
 
 }

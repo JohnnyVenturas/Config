@@ -1,9 +1,11 @@
 PROMPT='%B%F{white}%n@%m %1~ ~> %f%b'
 ZDOTDIR=~/.config/zsh
 
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 HISTFILE="$ZDOTDIR/.zsh_history"
+
+. $ZDOTDIR/.worktrees
 
 
 
@@ -88,9 +90,9 @@ install_plugins() {
         git_repo="$git_path/$plugin"
 
         if [ -d "$plugin_directory" ]; then
-            git -C  "$plugin_directory" pull 
+            git -C  "$plugin_directory" pull  > /dev/null 2>&1 
         else
-            git clone $git_repo $plugin_directory  --quiet
+            git clone $git_repo $plugin_directory  --quiet > /dev/null 2>&1
         fi
     done
     reset-prompt

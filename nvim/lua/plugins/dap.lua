@@ -52,6 +52,7 @@ return {
 
             local gdb = vim.fn.exepath("gdb")
             local lldb                = vim.fn.exepath("lldb")
+            --- local debuger= os.env("CXX_DEBUGGER")
 
             dap.adapters.cppdbg          = {
                 type = "executable",

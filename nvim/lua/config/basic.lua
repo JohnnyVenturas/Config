@@ -30,4 +30,4 @@ vim.opt.number=true
 vim.opt.guicursor='n-v-c-i:block'
 vim.opt.autochdir=true
 
-transparent_mode = true
+transparent_mode = false

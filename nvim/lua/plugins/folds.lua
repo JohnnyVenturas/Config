@@ -6,7 +6,7 @@ return {
         -- Basic options for folding
         vim.o.foldcolumn = "1"  -- Show fold column
         vim.o.foldlevel = 99    -- High level to avoid auto-closing
-        vim.o.foldlevelstart = 99
+        vim.o.foldlevelstart = 99 
         vim.o.foldenable = true
 
         -- Custom fold text handler (from your example, with number suffix)
