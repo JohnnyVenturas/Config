@@ -32,7 +32,7 @@ build_parents() {
 }
 
 install_configs() {
-    set -- "nvim" "tmux/tmux.conf" "zsh/.zprofile"  "zsh/.zshrc" "zsh/.zshenv" ".profile" ".bashrc" "wezterm/wezterm.lua"
+    set -- "nvim" "tmux/tmux.conf" "zsh/.zprofile"  "zsh/.zshrc" "zsh/.worktrees" "zsh/.zshenv" ".profile" ".bashrc" "wezterm/wezterm.lua"
     success=0
     failure=0
     total=$#
