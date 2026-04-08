@@ -8,7 +8,7 @@ HISTFILE="$ZDOTDIR/.zsh_history"
 . $ZDOTDIR/.worktrees
 . $ZDOTDIR/.nvm
 
-
+[ $(uname) = 'Darwin' ] && eval "$($(which brew) shellenv)"
 
 autoload -z edit-command-line
 zle -N edit-command-line
@@ -19,7 +19,6 @@ export EDITOR=nvim
 bindkey -v
 
 bindkey -M vicmd 'v' edit-command-line
-
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -45,8 +44,6 @@ function ssh_setup() {
     ssh-add ~/.ssh/bbudura > /dev/null 2>&1
 }
 
-
-
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -58,68 +55,19 @@ function y() {
 function fan_on() {
     pinctrl FAN_PWM op dl
 }
+
 function fan_off() {
     pinctrl FAN_PWM op dh
 }
 
-
-
-
 bindkey -M vicmd '/' history-incremental-pattern-search-backward
 bindkey -M vicmd '?' history-incremental-pattern-search-forward
-
 bindkey -M viins '^R' history-incremental-pattern-search-backward
 bindkey -M viins '^F' history-incremental-pattern-search-forward
 
-
-
 ssh_setup
 
-
-PLUGINS="$ZDOTDIR/plugins"
-[ -d "$PLUGINS" ] || mkdir -p "$PLUGINS"
-
-
-
-install_plugins() {
-    plugins=('zsh-users/zsh-autosuggestions' 'Aloxaf/fzf-tab')
-    git_path="https://github.com"
-
-
-    for plugin in "${plugins[@]}";do
-        plugin_directory="$PLUGINS/$(basename $plugin)"
-        git_repo="$git_path/$plugin"
-
-        if [ -d "$plugin_directory" ]; then
-            git -C  "$plugin_directory" pull  > /dev/null 2>&1 
-        else
-            git clone $git_repo $plugin_directory  --quiet > /dev/null 2>&1
-        fi
-    done
-    reset-prompt
-
-}
-
-source_plugins() {
-
-    for plugin_directory in "$PLUGINS"/*(N);do
-
-        [ -d "$plugin_directory" ] || continue
-
-        for zsh_file in "$plugin_directory"/*.zsh(N); do
-            [ -f "$zsh_file" ] || continue
-
-            . "$zsh_file"
-        done
-        
-    done
-}
-
-zle -N install_plugins
-
-
-bindkey -M vicmd ',ip' install_plugins 
-source_plugins
+[ -f $ZDOTDIR/.plugins ] && . $ZDOTDIR/.plugins
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -140,6 +88,4 @@ zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
-
 autoload -U compinit; compinit
-

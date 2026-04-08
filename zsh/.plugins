@@ -1,0 +1,49 @@
+#!/bin/sh
+
+PLUGINS="$ZDOTDIR/plugins"
+[ -d "$PLUGINS" ] || mkdir -p "$PLUGINS"
+
+
+install_plugins() {
+    plugins=('zsh-users/zsh-autosuggestions' 'Aloxaf/fzf-tab')
+    git_path="https://github.com"
+
+
+    for plugin in "${plugins[@]}";do
+        plugin_directory="$PLUGINS/$(basename $plugin)"
+        git_repo="$git_path/$plugin"
+
+        if [ -d "$plugin_directory" ]; then
+            git -C  "$plugin_directory" pull  > /dev/null 2>&1 
+        else
+            git clone $git_repo $plugin_directory  --quiet > /dev/null 2>&1
+        fi
+    done
+}
+
+show_installed_plugins() {
+    plugins=$(ls -lAh $PLUGINS | awk '{print $9}' | sed '/^$/d' |fzf)  
+}
+
+source_plugins() {
+
+    for plugin_directory in "$PLUGINS"/*(N);do
+
+        [ -d "$plugin_directory" ] || continue
+
+        for zsh_file in "$plugin_directory"/*.zsh(N); do
+            [ -f "$zsh_file" ] || continue
+
+            . "$zsh_file"
+        done
+        
+    done
+}
+
+zle -N install_plugins
+zle -N show_installed_plugins
+
+
+bindkey -M vicmd ',ip' install_plugins 
+bindkey -M vicmd ',p' show_installed_plugins 
+source_plugins

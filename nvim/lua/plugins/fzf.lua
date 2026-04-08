@@ -12,8 +12,6 @@ return {
                     }
                 },
         })
-        
-
 
 		vim.keymap.set('n', '<leader>/', function() fzf.blines({query="'"}) end , { desc = 'Fzf find files' })
 		vim.keymap.set('n', '<leader>?', 
@@ -27,8 +25,13 @@ return {
 		vim.keymap.set('n', '<leader>fr', fzf.lsp_references, { desc = 'Fzf references' })
 		vim.keymap.set('n', '<leader>fD', fzf.lsp_workspace_diagnostics, { desc = 'Fzf lsp_definitions' })
 		vim.keymap.set('n', '<leader>fl', fzf.live_grep, { desc = 'Fzf live grep' })
+        vim.keymap.set('n', '<leader>fL', function()
+            fzf.live_grep({ search = vim.fn.expand('<cword>') })
+        end, { desc = 'Fzf live grep word under cursor' })
 		vim.keymap.set('n', '<leader>fh', fzf.help_tags, { desc = 'Fzf help tags' })
 		vim.keymap.set('n', '<leader>fw', fzf.tags, { desc = 'Lsp workspace symbols' })
+		vim.keymap.set('n', '<leader>ft', fzf.treesitter, { desc = 'Lsp Document Symbols' })
+		vim.keymap.set('n', '<leader>ft', fzf.treesitter, { desc = 'Lsp Document Symbols' })
 		vim.keymap.set('n', '<leader>fW', 
             function()
                 local word = vim.fn.expand('<cword>')
@@ -37,7 +40,6 @@ return {
             { desc = 'Lsp workspace symbols' })
 		vim.keymap.set('n', '<leader>fs', fzf.git_status, { desc = 'Lsp Document Symbols' })
 		vim.keymap.set('n', '<leader>fc', fzf.git_commits, { desc = 'Lsp Document Symbols' })
-		vim.keymap.set('n', '<leader>ft', fzf.treesitter, { desc = 'Lsp Document Symbols' })
         
     end
 
