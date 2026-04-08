@@ -6,6 +6,7 @@ SAVEHIST=100000
 HISTFILE="$ZDOTDIR/.zsh_history"
 
 . $ZDOTDIR/.worktrees
+. $ZDOTDIR/.nvm
 
 
 

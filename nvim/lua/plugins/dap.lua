@@ -134,7 +134,7 @@ return {
             -- Key mappings for debugging
             vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
             vim.keymap.set("n", "<leader>drc", dap.run_to_cursor)
-            vim.keymap.set("n", "<leader>?", function()
+            vim.keymap.set("n", "<leader>de", function()
                 ui.eval(nil, { enter = true })
             end)
 
