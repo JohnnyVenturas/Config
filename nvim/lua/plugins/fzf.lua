@@ -29,6 +29,7 @@ return {
             fzf.live_grep({ search = vim.fn.expand('<cword>') })
         end, { desc = 'Fzf live grep word under cursor' })
 		vim.keymap.set('n', '<leader>fh', fzf.help_tags, { desc = 'Fzf help tags' })
+		vim.keymap.set('n', '<leader>fe', fzf.diagnostics_document, { desc = 'Fzf help tags' })
 		vim.keymap.set('n', '<leader>fw', fzf.tags, { desc = 'Lsp workspace symbols' })
 		vim.keymap.set('n', '<leader>ft', fzf.treesitter, { desc = 'Lsp Document Symbols' })
 		vim.keymap.set('n', '<leader>ft', fzf.treesitter, { desc = 'Lsp Document Symbols' })

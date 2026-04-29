@@ -6,7 +6,6 @@ SAVEHIST=100000
 HISTFILE="$ZDOTDIR/.zsh_history"
 
 . $ZDOTDIR/.worktrees
-. $ZDOTDIR/.nvm
 
 [ $(uname) = 'Darwin' ] && eval "$($(which brew) shellenv)"
 
@@ -89,3 +88,9 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 autoload -U compinit; compinit
+
+
+source_python() {
+    [ -z "$1" ] && exit 1
+    source "$1/bin/activate"
+}

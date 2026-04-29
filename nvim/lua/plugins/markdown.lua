@@ -8,7 +8,7 @@ return {
     opts = {},
     config = function()
         require('render-markdown').setup({
-            completions = { lsp = { enabled = true } },
+            completions = { lsp = { enabled = false } },
             heading = {
                 -- Useful context to have when evaluating values.
                 -- | level    | the number of '#' in the heading marker         |

@@ -1,9 +1,17 @@
 #!/bin/sh
 
+configs="nvim;tmux;zsh;ghostty;git"
+
 colors () {
     GREEN='\033[0;32m'
     RED='\033[0;31m'
     NC='\033[0m' # No Color
+}
+
+color() {
+    local word="$1"
+    local color="$2"
+    printf "%b%s%b" "$color" "$word" "$NC"
 }
 
 newline() {
@@ -13,80 +21,50 @@ newline() {
 
 
 set_base_paths () {
-    config_directory="$HOME/.config"
-    current_directory=$(dirname $(realpath "$0"))
-
+    CONFIG_DIR="$HOME/.config"
+    CUR_DIR="$(dirname "$(realpath "$0")")"
 }
 
-build_parents() {
-
-    set -- "tmux" "zsh" "wezterm"
-
-    for parent_directory in "$@"; do
-        if [ ! -e "$config_directory/$parent_directory" ]; then
-            mkdir "$config_directory/$parent_directory"
-            printf "%bCreating%b parent_directory %b%s%b" "$RED" "$NC"  "$GREEN" "$config_directory/$parent_directory" "$NC"
-        fi
-    done
-
-}
 
 install_configs() {
-    set -- "nvim" "tmux/tmux.conf" "zsh/.zprofile"  "zsh/.zshrc" "zsh/.worktrees" "zsh/.zshenv" ".profile" ".bashrc" "wezterm/wezterm.lua"
-    success=0
-    failure=0
-    total=$#
-
-    for configuration_file in "$@"; do
-        source_path="$current_directory/$configuration_file"
-
-        case $configuration_file in
-            "zsh/.zshenv")
-                destination_path="$HOME/.zshenv"
-                ;;
-            *)
-                destination_path="$config_directory/$configuration_file"
-                ;;
-        esac
-
-
-        if [ -e $destination_path ]; then
-            printf "%s already exists\n"  "$destination_path"
-            printf "%bFailiure%b . Remove old config before continuing (e.g $configuration_file)\n" "${RED}" "${NC}"
-            failure=$((failure + 1))
-            newline
-        else
-            printf "%bSuccess%b . Linked %s  to %s.\n" "${GREEN}" "${NC}" "$destination_path" "$source_path"
-            success=$((success + 1))
-            ln -s "$source_path" "$destination_path"
-        fi
+    IFS=';' 
+    for config in $configs; do
+        printf "%s\n" "$(color "=== Linking $config ===" "$GREEN")"
+        ln -s "$PWD"/"$config" "$CONFIG_DIR"/"$config"
     done
 
-    printf "%bsucceded%b %s " "${GREEN}" "${NC}" "$success/$total"  
-    printf "%bfailed%b %s\n" "${RED}" "${NC}" "$failure/$total"
+    printf "%s\n"  "$(color "=== Setting up zshenv ===" "$GREEN")"
+
+    if [ -f ~/.zshenv ]; then 
+        printf "%s\n"  "$(color "=== REMOVE ~/.zshenv before continuing ===" "$RED")"
+        exit 1
+    fi
+
+        cat > ~/.zshenv << 'EOF'
+ZDOTDIR=$HOME/.config/zsh
+
+if [ -e "$ZDOTDIR/.zshenv" ]; then
+    . "$ZDOTDIR/.zshenv"
+fi
+
+EOF
 }
 
 uninstall_configs() {
-    set -- "nvim" "tmux/tmux.conf" "zsh/.zprofile"  "zsh/.zshrc" "zsh/.zshenv" ".profile" ".bashrc" "wezterm/wezterm.lua"
-
-    for configuration_file in "$@"; do
-
-        case $configuration_file in
-            "zsh/.zshenv")
-                destination_path="$HOME/.zshenv"
-                ;;
-            *)
-                destination_path="$config_directory/$configuration_file"
-                ;;
-        esac
-
-        unlink "$destination_path"
+    IFS=';' 
+    for config in $configs; do
+        printf "%s\n" "$(color "=== Unlinking $config ===" "$RED")"
+        unlink $CONFIG_DIR/$config
     done
+
+    if [ -f ~/.zshenv ]; then
+        printf "%s\n" "$(color "=== REMOVING ~/.zshenv ===" "$RED")"
+        rm ~/.zshenv
+    fi
 }
 
 colors
 set_base_paths
-build_parents
 
 parse_input() {
 
