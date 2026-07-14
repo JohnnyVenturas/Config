@@ -1,6 +1,8 @@
 PROMPT='%B%F{white}%n@%m %1~ ~> %f%b'
 ZDOTDIR=~/.config/zsh
 
+export PATH="$PATH:$HOME/.local/bin"
+
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE="$ZDOTDIR/.zsh_history"

@@ -12,6 +12,7 @@ install_plugins() {
     for plugin in "${plugins[@]}";do
         plugin_directory="$PLUGINS/$(basename $plugin)"
         git_repo="$git_path/$plugin"
+        echo $git_repo
 
         if [ -d "$plugin_directory" ]; then
             git -C  "$plugin_directory" pull  > /dev/null 2>&1 
