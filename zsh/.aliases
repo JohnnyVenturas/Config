@@ -1,0 +1,50 @@
+#!/bin/zsh
+_delim="\t------\t"
+_spy_description="\tspy${_delim}source python environment\n"
+_fan_on_description="\tfan_on${_delim}turn on fan(raspberry pi only)\n"
+_fan_off_description="\tfan_on${_delim}turn off fan(raspberry pi only)\n"
+_show_installed_plugins_description="\tsip${_delim}show installed plugins\n"
+_install_plugins_description="\tip${_delim}install plugins\n"
+_config_description="\tcf${_delim}cd into cf directory"
+_descriptions=("Aliases:\n" "$_spy_description" "$_fan_on_description" "$_fan_off_description" "$_show_installed_plugins_description" "$_install_plugins_description" )
+
+
+this=${(%):-%x}
+
+function _make_descriptions() {
+    rm /tmp/alias_descriptions
+    for description in "${_descriptions[@]}"; do
+        printf "%s" "$description" >> /tmp/alias_descriptions
+    done
+}
+
+
+if [ ! -f /tmp/alias_descriptions ] || [ $this -nt /tmp/alias_descriptions ];
+then
+    _make_descriptions
+fi
+
+description="$(cat /tmp/alias_descriptions)"
+
+function spy() {
+    [ -z "$1" ] && return 1
+    source "$1/bin/activate"
+}
+
+function fan_on() {
+    pinctrl FAN_PWM op dl
+}
+
+function fan_off() {
+    pinctrl FAN_PWM op dh
+}
+
+function config() {
+    parent="$(dirname "$(dirname "$(readlink -f "$this")")")"
+    cd "$parent"
+}
+
+alias sip='show_installed_plugins'
+alias ip='install_plugins'
+alias help='echo "$description"'
+alias cf='config'

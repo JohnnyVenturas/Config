@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+. $ZDOTDIR/.fzf
+. $ZDOTDIR/.worktrees
+. $ZDOTDIR/.aliases
+[ -f $ZDOTDIR/.plugins ] && . $ZDOTDIR/.plugins

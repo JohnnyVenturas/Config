@@ -30,7 +30,7 @@ install_configs() {
     IFS=';' 
     for config in $configs; do
         printf "%s\n" "$(color "=== Linking $config ===" "$GREEN")"
-        ln -s "$PWD"/"$config" "$CONFIG_DIR"/"$config"
+        ln -s "$PWD"/"$config" "$CONFIG_DIR"
     done
 
     printf "%s\n"  "$(color "=== Setting up zshenv ===" "$GREEN")"

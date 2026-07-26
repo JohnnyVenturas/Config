@@ -7,7 +7,6 @@ HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE="$ZDOTDIR/.zsh_history"
 
-. $ZDOTDIR/.worktrees
 
 [ $(uname) = 'Darwin' ] && eval "$($(which brew) shellenv)"
 
@@ -53,13 +52,6 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function fan_on() {
-    pinctrl FAN_PWM op dl
-}
-
-function fan_off() {
-    pinctrl FAN_PWM op dh
-}
 
 bindkey -M vicmd '/' history-incremental-pattern-search-backward
 bindkey -M vicmd '?' history-incremental-pattern-search-forward
@@ -68,7 +60,6 @@ bindkey -M viins '^F' history-incremental-pattern-search-forward
 
 ssh_setup
 
-[ -f $ZDOTDIR/.plugins ] && . $ZDOTDIR/.plugins
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -92,7 +83,5 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 autoload -U compinit; compinit
 
 
-source_python() {
-    [ -z "$1" ] && exit 1
-    source "$1/bin/activate"
-}
+
+. $ZDOTDIR/.includes
