@@ -1,6 +1,6 @@
 #!/bin/sh
 
-configs="nvim;tmux;zsh;ghostty;git"
+configs="nvim;tmux;zsh;ghostty;git;aerospace"
 
 colors () {
     GREEN='\033[0;32m'

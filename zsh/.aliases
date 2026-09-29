@@ -1,6 +1,6 @@
 #!/bin/zsh
 _delim="\t------\t"
-_spy_description="\tspy${_delim}source python environment\n"
+_spy_description="\tspy${_delim}source python environment (git root by default)\n"
 _fan_on_description="\tfan_on${_delim}turn on fan(raspberry pi only)\n"
 _fan_off_description="\tfan_on${_delim}turn off fan(raspberry pi only)\n"
 _show_installed_plugins_description="\tsip${_delim}show installed plugins\n"
@@ -12,7 +12,7 @@ _descriptions=("Aliases:\n" "$_spy_description" "$_fan_on_description" "$_fan_of
 this=${(%):-%x}
 
 function _make_descriptions() {
-    rm /tmp/alias_descriptions
+    [ -f /tmp/alias_descriptions ] && rm /tmp/alias_descriptions
     for description in "${_descriptions[@]}"; do
         printf "%s" "$description" >> /tmp/alias_descriptions
     done
@@ -27,8 +27,31 @@ fi
 description="$(cat /tmp/alias_descriptions)"
 
 function spy() {
-    [ -z "$1" ] && return 1
-    source "$1/bin/activate"
+    local root candidate
+
+    if [ -n "$1" ]; then
+        root="$1"
+    else
+        root="$(git rev-parse --show-toplevel 2>/dev/null)"
+        [ -z "$root" ] && root="$PWD"
+    fi
+
+    # The path handed in may be the environment itself.
+    if [ -f "$root/bin/activate" ]; then
+        source "$root/bin/activate"
+        return
+    fi
+
+    for candidate in "$root"/.venv "$root"/venv "$root"/env "$root"/.env; do
+        if [ -f "$candidate/bin/activate" ]; then
+            source "$candidate/bin/activate"
+            echo "spy: $candidate"
+            return
+        fi
+    done
+
+    echo "spy: no python environment under $root" >&2
+    return 1
 }
 
 function fan_on() {
